@@ -1,5 +1,3 @@
-%%writefile agents/nodes.py
-
 from typing import Dict
 from graph.state import AgentState
 from agents.config import AGENT_CONFIG
@@ -7,7 +5,7 @@ from tools.hashtag_generator import hashtag_generator
 from openai import OpenAI
 import os
 
-# Initialize Groq client
+# Groq Client
 client = OpenAI(
     api_key=os.environ["GROQ_API_KEY"],
     base_url="https://api.groq.com/openai/v1"
@@ -17,7 +15,6 @@ def create_agent_node(agent_name: str):
     config = AGENT_CONFIG[agent_name]
     
     def agent_node(state: AgentState) -> Dict:
-        # Generate hashtags using shared tool
         hashtags = hashtag_generator.invoke({
             "topic": state.get("topic", ""),
             "context": state.get("context", ""),
@@ -25,7 +22,6 @@ def create_agent_node(agent_name: str):
             "platform": "instagram" if agent_name == "instagram_caption" else "linkedin"
         })
         
-        # Add hashtags to context
         enhanced_context = f"{state.get('context', '')}\n\nRelevant Hashtags: {', '.join(hashtags)}"
         
         prompt_text = config["prompt"].format(
@@ -35,17 +31,15 @@ def create_agent_node(agent_name: str):
         
         messages = state.get("messages", []) + [{"role": "user", "content": prompt_text}]
         
-        # Call Groq
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",   # Better model
+            model="llama-3.3-70b-versatile",
             messages=messages,
             temperature=0.7,
-            max_tokens=800
+            max_tokens=700
         )
         
         content = response.choices[0].message.content.strip()
         
-        # Store output
         output = {}
         if agent_name == "instagram_caption":
             output["instagram_caption"] = content
@@ -66,10 +60,10 @@ def create_agent_node(agent_name: str):
     return agent_node
 
 
-# Re-initialize agents
+# Initialize agents
 instagram_agent = create_agent_node("instagram_caption")
 linkedin_post_agent = create_agent_node("linkedin_post")
 linkedin_article_agent = create_agent_node("linkedin_article")
 announcement_agent = create_agent_node("announcement")
 
-print("✅ Agents updated with Hashtag Tool Integration!")
+print("✅ Agents loaded successfully!")
