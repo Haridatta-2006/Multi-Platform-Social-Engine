@@ -34,7 +34,7 @@ def create_agent_node(agent_name: str):
         messages = state.get("messages", []) + [{"role": "user", "content": prompt_text}]
 
         response = client.chat.completions.create(
-           model="mixtral-8x7b-32768"
+            model="mixtral-8x7b-32768"
             messages=messages,
             temperature=0.7,
             max_tokens=400                  # Reduced
