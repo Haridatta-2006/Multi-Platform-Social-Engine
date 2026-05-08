@@ -34,10 +34,10 @@ def create_agent_node(agent_name: str):
         messages = state.get("messages", []) + [{"role": "user", "content": prompt_text}]
 
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama3-8b-8192",        # Most stable & fast on Groq free tier
             messages=messages,
             temperature=0.7,
-            max_tokens=800
+            max_tokens=500                 # Reduced to avoid limits
         )
 
         content = response.choices[0].message.content.strip()
