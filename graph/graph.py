@@ -18,7 +18,6 @@ def router(state: AgentState):
         return "announcement_agent"
     return END
 
-# Build the workflow
 workflow = StateGraph(AgentState)
 
 workflow.add_node("instagram_agent", instagram_agent)
@@ -34,4 +33,4 @@ workflow.add_edge("announcement_agent", END)
 
 app = workflow.compile()
 
-print("✅ LangGraph Workflow Loaded Successfully!")
+print("✅ LangGraph Workflow Compiled Successfully!")
