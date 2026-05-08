@@ -3,5 +3,6 @@ langchain
 langchain-groq
 langchain-community
 gradio
+streamlit
+openai
 python-dotenv
-tiktoken
