@@ -1,4 +1,3 @@
-
 from prompts.instagram import INSTAGRAM_CAPTION_PROMPT
 from prompts.linkedin_post import LINKEDIN_POST_PROMPT
 from prompts.linkedin_article import LINKEDIN_ARTICLE_PROMPT
