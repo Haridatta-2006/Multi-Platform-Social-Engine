@@ -3,7 +3,17 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import gradio as gr
-from main import run_social_engine
+
+# === Self-contained import to avoid errors ===
+try:
+    from main import run_social_engine
+except:
+    # Fallback: Load main.py directly
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("main", "main.py")
+    main_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(main_module)
+    run_social_engine = main_module.run_social_engine
 
 def generate_content(topic, context, platforms):
     if not topic or not topic.strip():
@@ -26,25 +36,18 @@ def generate_content(topic, context, platforms):
 with gr.Blocks(title="Multi-Platform Social Engine", theme=gr.themes.Soft()) as demo:
     gr.Markdown("""
     # 🚀 Multi-Platform Social Engine
-    **LangGraph Powered Multi-Agent AI System**
+    **LangGraph Multi-Agent AI System**
     """)
     
     with gr.Row():
         with gr.Column(scale=1):
-            topic = gr.Textbox(
-                label="📌 Main Topic", 
-                placeholder="Enter any topic (AI, Movies, Career, Technology...)",
-                lines=2
-            )
-            context = gr.Textbox(
-                label="📝 Context / Target Audience (Optional)", 
-                placeholder="e.g. For working professionals, students, movie lovers",
-                lines=3
-            )
+            topic = gr.Textbox(label="📌 Main Topic", placeholder="Enter any topic...", lines=2)
+            context = gr.Textbox(label="📝 Context (Optional)", placeholder="Target audience or extra info", lines=3)
+            
             platforms = gr.CheckboxGroup(
                 choices=["Instagram", "LinkedIn Post", "LinkedIn Article", "Announcement"],
                 value=["Instagram", "LinkedIn Post"],
-                label="🎯 Select Platforms"
+                label="Select Platforms"
             )
             btn = gr.Button("✨ Generate Content", variant="primary", size="large")
         
