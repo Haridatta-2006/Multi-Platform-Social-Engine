@@ -1,2 +1,25 @@
-# Multi-Platform-Social-Engine
-Multi-Platform Social Engine is a LangGraph-based multi-agent AI system that generates tailored content for Instagram and LinkedIn using specialized agents. Powered by Groq with a shared hashtag tool and built with a clean Streamlit interface. Demonstrates production-grade agentic AI and intelligent multi-agent workflow.
+# Multi-Platform Social Engine - LangGraph Agentic AI
+
+**Production-Level Multi-Agent System** for generating optimized content across Instagram, LinkedIn, and more.
+
+### ✨ Features
+- **LangGraph Orchestrator** (Stateful Multi-Agent Workflow)
+- 4 Specialized Agents (Instagram, LinkedIn Post, LinkedIn Article, Announcement Bot)
+- Shared Tool: Intelligent Hashtag Generator
+- Groq LLM Integration (Fast & Cost-effective)
+- Clean Project Structure with proper package organization
+
+### 🏗️ Architecture
+- **Human Input** → **LangGraph Brain** → Routes to specialized agents
+- Agents use shared tools and maintain conversation memory
+- Sequential + Conditional Routing
+
+### 🚀 How to Run
+
+```python
+from main import run_social_engine
+
+result = run_social_engine(
+    topic="Your Topic Here",
+    context="Additional context or target audience"
+)
