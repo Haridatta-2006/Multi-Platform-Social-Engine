@@ -1,12 +1,8 @@
-%%writefile app.py
-
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import gradio as gr
-
-# Direct imports (more reliable on cloud)
 from main import run_social_engine
 
 def generate_content(topic, context, platforms):
@@ -14,10 +10,7 @@ def generate_content(topic, context, platforms):
         return ["❌ Please enter a topic!"] * 4
     
     try:
-        result = run_social_engine(
-            topic.strip(), 
-            context.strip() if context else ""
-        )
+        result = run_social_engine(topic.strip(), context.strip() if context else "")
         
         ig = result.get("instagram_caption", "Not generated") if "Instagram" in platforms else "Not selected"
         li_post = result.get("linkedin_post", "Not generated") if "LinkedIn Post" in platforms else "Not selected"
@@ -25,20 +18,29 @@ def generate_content(topic, context, platforms):
         ann = result.get("announcement_message", "Not generated") if "Announcement" in platforms else "Not selected"
         
         return ig, li_post, li_article, ann
-    
     except Exception as e:
         error = f"❌ Error: {str(e)}"
         return error, error, error, error
 
 
 with gr.Blocks(title="Multi-Platform Social Engine", theme=gr.themes.Soft()) as demo:
-    gr.Markdown("# 🚀 Multi-Platform Social Engine\n**LangGraph • Multi-Agent AI System**")
+    gr.Markdown("""
+    # 🚀 Multi-Platform Social Engine
+    **LangGraph Powered Multi-Agent AI System**
+    """)
     
     with gr.Row():
         with gr.Column(scale=1):
-            topic = gr.Textbox(label="📌 Main Topic", placeholder="Enter any topic (AI, Movies, Career, etc.)", lines=2)
-            context = gr.Textbox(label="📝 Context / Target Audience (Optional)", placeholder="e.g. For students, professionals, movie lovers", lines=3)
-            
+            topic = gr.Textbox(
+                label="📌 Main Topic", 
+                placeholder="Enter any topic (AI, Movies, Career, Technology...)",
+                lines=2
+            )
+            context = gr.Textbox(
+                label="📝 Context / Target Audience (Optional)", 
+                placeholder="e.g. For working professionals, students, movie lovers",
+                lines=3
+            )
             platforms = gr.CheckboxGroup(
                 choices=["Instagram", "LinkedIn Post", "LinkedIn Article", "Announcement"],
                 value=["Instagram", "LinkedIn Post"],
