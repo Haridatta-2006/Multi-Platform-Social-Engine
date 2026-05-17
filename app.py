@@ -1,23 +1,15 @@
 import streamlit as st
 # pyrefly: ignore [missing-import]
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import json
 
 # Configure Gemini
 API_KEY = "AIzaSyAooP4cpCgS1vR0gsT-VAtFUw7t64jzvfg"
-genai.configure(api_key=API_KEY)
-
-# Generation config to ensure JSON output
-generation_config = {
-    "temperature": 0.7,
-    "top_p": 1,
-    "top_k": 1,
-    "max_output_tokens": 4096,
-    "response_mime_type": "application/json"
-}
+client = genai.Client(api_key=API_KEY)
 
 # The best model available currently for general text tasks
-model = genai.GenerativeModel("gemini-1.5-pro", generation_config=generation_config)
+MODEL_NAME = "gemini-2.5-pro"
 
 st.set_page_config(page_title="Social Engine", page_icon="🚀", layout="wide")
 
@@ -145,7 +137,14 @@ def generate_content(topic):
     """
     
     try:
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model=MODEL_NAME,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                temperature=0.7,
+            )
+        )
         return json.loads(response.text)
     except Exception as e:
         return {"error": str(e)}
