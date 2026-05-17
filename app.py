@@ -5,7 +5,7 @@ from google.genai import types
 import json
 
 # Configure Gemini
-API_KEY = "AIzaSyAooP4cpCgS1vR0gsT-VAtFUw7t64jzvfg"
+API_KEY = "AIzaSyBc_7HxEEg65k8xeP9WmJiqzA8ZsW8w08g"
 client = genai.Client(api_key=API_KEY)
 
 # The best model available currently for general text tasks
